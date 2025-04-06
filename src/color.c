@@ -1,32 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memchr.c                                        :+:      :+:    :+:   */
+/*   color.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mknoll <mknoll@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/18 10:18:23 by moritzknoll       #+#    #+#             */
-/*   Updated: 2025/04/06 11:08:57 by mknoll           ###   ########.fr       */
+/*   Created: 2025/04/06 09:15:46 by moritzknoll       #+#    #+#             */
+/*   Updated: 2025/04/06 10:54:19 by mknoll           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <string.h>
+#include "fdf.h"
 
-void	*ft_memchr(const void *s, int c, size_t n)
+int	get_gradient(int start, int end, float ratio)
 {
-	unsigned int	i;
-	const char		*char_s;
+	int	r;
+	int	g;
+	int	b;
 
-	char_s = (const char *)s;
-	i = 0;
-	while (i < n)
-	{
-		if (char_s[i] == (char)c)
-		{
-			return ((void *)(char_s + i));
-		}
-		i++;
-	}
-	return (NULL);
+	if (ratio > 1)
+		ratio = 1;
+	r = ((end >> 16) & 0xFF) * ratio + ((start >> 16) & 0xFF) * (1 - ratio);
+	g = ((end >> 8) & 0xFF) * ratio + ((start >> 8) & 0xFF) * (1 - ratio);
+	b = (end & 0xFF) * ratio + (start & 0xFF) * (1 - ratio);
+	return (r << 16 | g << 8 | b);
 }
