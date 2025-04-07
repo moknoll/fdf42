@@ -1,17 +1,20 @@
 # Compiler & Flags
 CC      = gcc
-CFLAGS  = -Wall -Wextra -Werror -Iincludes -Ilibft -IMLX42/include
-LDFLAGS = -Llibft -LMLX42/build -lft -lmlx42 -ldl -lglfw -pthread -lm
+CFLAGS  = -Wall -Wextra -Werror -Iincludes -Ilibft -IMLX42/include -I/opt/homebrew/include
+LDFLAGS = -Llibft -LMLX42/build -lft -lmlx42 \
+          -L/opt/homebrew/lib -lglfw \
+          -framework Cocoa -framework OpenGL -framework IOKit -framework CoreVideo
+
+
 
 # Source Files
 SRC = src/main.c \
       src/parse_map.c \
       src/parse_line.c \
-      src/draw_line.c \
-      src/projection.c \
-      src/render.c \
-      src/color.c \
-      src/utils.c
+      src/utils.c \
+	  src/render.c \
+	  src/drawing.c \
+	  src/color.c
 
 OBJ     = $(SRC:.c=.o)
 NAME    = fdf

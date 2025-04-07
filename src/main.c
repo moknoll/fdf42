@@ -1,44 +1,37 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mknoll <mknoll@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/06 09:16:00 by moritzknoll       #+#    #+#             */
-/*   Updated: 2025/04/06 11:37:07 by mknoll           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "fdf.h"
 
-int main(int argc, char **argv)
+// void print_map(t_map *map)
+// {
+//     int y = 0;
+//     while (y < map->height)
+//     {
+//         int x = 0;
+//         while (x < map->width)
+//         {
+//             x++;
+//         }
+//         y++;
+//     }
+// }
+
+int	main(int argc, char **argv)
 {
-    t_data data;
+	t_map	*map;
 
-    if (argc != 2)
-        exit_error("Usage: ./fdf <map.fdf>");
+	if (argc != 2)
+	{
+		ft_putendl_fd("Usage: ./fdf <map.fdf>", 2);
+		return (1);
+	}
 
-    // MLX Initialisierung (mit allen benötigten Parametern)
-    data.mlx = mlx_init(WIDTH, HEIGHT, "FDF", false);
-    if (!data.mlx)
-        exit_error("MLX initialization failed");
-    // Map Parsing
-    data.map = parse_map(argv[1]);
-    if (!data.map)
-        exit_error("Map parsing failed");
-
-    // Image erstellen (MLX42 verwendet direkt mlx_image_t)
-    data.img = mlx_new_image(data.mlx, WIDTH, HEIGHT);
-    if (!data.img)
-        exit_error("Image creation failed");
-
-    // Image ins Fenster einfügen
-    if (mlx_image_to_window(data.mlx, data.img, 0, 0) < 0)
-        exit_error("Failed to put image to window");
-
-    render(&data);
-    mlx_loop(data.mlx);
-    mlx_terminate(data.mlx);
-    return (0);
+	map = parse_map(argv[1]);
+	if (!map)
+	{
+		ft_putendl_fd("Error parsing failed", 2);
+		return (1);
+	}
+	render_map(map);
+	// print_map(map);
+	free_map(map);
+	return (0);
 }

@@ -3,24 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mknoll <mknoll@student.42.fr>              +#+  +:+       +#+        */
+/*   By: moritzknoll <moritzknoll@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/06 09:14:15 by moritzknoll       #+#    #+#             */
-/*   Updated: 2025/04/06 10:58:04 by mknoll           ###   ########.fr       */
+/*   Updated: 2025/04/07 11:07:13 by moritzknoll      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
-
-void	free_grid(t_point **grid, int height)
-{
-	int	i;
-
-	i = 0;
-	while (i < height)
-		free(grid[i++]);
-	free(grid);
-}
 
 void	exit_error(char *msg)
 {
@@ -37,54 +27,45 @@ static int ft_isspace(char c)
 
 static int  get_digit(char c, int base)
 {
-    int digit;
+	int digit;
 
-    if (c >= '0' && c <= '9')
-        digit = c - '0';
-    else if (c >= 'a' && c <= 'f')
-        digit = c - 'a' + 10;
-    else if (c >= 'A' && c <= 'F')
-        digit = c - 'A' + 10;
-    else
-        return (-1); // Ungültiges Zeichen
+	if (c >= '0' && c <= '9')
+		digit = c - '0';
+	else if (c >= 'a' && c <= 'f')
+		digit = c - 'a' + 10;
+	else if (c >= 'A' && c <= 'F')
+		digit = c - 'A' + 10;
+	else
+		return (-1);
 
-    return (digit < base ? digit : -1);
+	return (digit < base ? digit : -1); //change
 }
 
 int ft_atoi_base(const char *str, int base)
 {
-    int result = 0;
-    int sign = 1;
-    int digit;
+	int result = 0;
+	int sign = 1;
+	int digit;
 
-    if (!str || base < 2 || base > 16)
-        return (0);
-
-    // Whitespace überspringen
-    while (ft_isspace(*str))
-        str++;
-
-    // Vorzeichen behandeln
-    if (*str == '-' || *str == '+')
-        sign = (*str++ == '-') ? -1 : 1;
-
-    // Ziffern parsen
-    while ((digit = get_digit(*str, base)) >= 0)
-    {
-        result = result * base + digit;
-        str++;
-    }
-
-    return (result * sign);
+	if (!str || base < 2 || base > 16)
+		return (0);
+	while (ft_isspace(*str))
+		str++;
+	if (*str == '-' || *str == '+')
+		sign = (*str++ == '-') ? -1 : 1; // change
+	while ((digit = get_digit(*str, base)) >= 0)
+	{
+		result = result * base + digit;
+		str++;
+	}
+	return (result * sign);
 }
 
-void    free_split(char **split_array)
+void	free_split(char **split_array)
 {
-    int i;
-
-    if (!split_array)
-        return ;
-
+	int i;
+	if (!split_array)
+		return ;
     i = 0;
     while (split_array[i])
     {
@@ -92,4 +73,39 @@ void    free_split(char **split_array)
         i++;
     }
     free(split_array);
+}
+
+void	free_map(t_map *map)
+{
+	int	y;
+
+	if (!map)
+		return ;
+	y = 0;
+	while (y < map->height)
+	{
+		if (map->grid[y])
+			free(map->grid[y]);
+		y++;
+	}
+	if (map->grid)
+		free(map->grid);
+	free(map);
+}
+
+void free_grid(t_point **grid, int height)
+{
+	int i;
+
+	if (!grid)
+		return;
+
+	i = 0;
+	while (i < height)
+	{
+		if (grid[i])
+			free(grid[i]);
+		i++;
+	}
+	free(grid);
 }
