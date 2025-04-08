@@ -3,25 +3,43 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moritzknoll <moritzknoll@student.42.fr>    +#+  +:+       +#+        */
+/*   By: mknoll <mknoll@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 11:02:26 by mknoll            #+#    #+#             */
-/*   Updated: 2025/02/04 17:48:45 by moritzknoll      ###   ########.fr       */
+/*   Updated: 2025/04/08 13:45:56 by mknoll           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-// static char	*fill_line(int fd, char *left_c, char *buffer);
-// static char	*seperate(char *line);
-// static char	*ft_strchr(char *s, int c);
+char	**get_static_buffer(void)
+{
+	static char	*stat_char = NULL;
+
+	return (&stat_char);
+}
+
+void	free_gnl_buffer(void)
+{
+	char	**buf;
+
+	buf = get_static_buffer();
+	if (*buf)
+	{
+		free(*buf);
+		*buf = NULL;
+	}
+}
 
 char	*get_next_line(int fd)
 {
-	static char	*stat_char;
+	char		**stat_ref;
+	char		*stat_char;
 	char		*line;
 	char		*buffer;
 
+	stat_ref = get_static_buffer();
+	stat_char = *stat_ref;
 	buffer = (char *)malloc((BUFFER_SIZE + 1) * sizeof(char));
 	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, NULL, 0) < 0)
 	{
@@ -37,8 +55,8 @@ char	*get_next_line(int fd)
 	free(buffer);
 	buffer = NULL;
 	if (!line)
-		return (NULL);
-	stat_char = seperate(line);
+		return (free(stat_char), NULL);
+	*stat_ref = seperate(line);
 	return (line);
 }
 
@@ -50,7 +68,7 @@ char	*seperate(char *line_buffer)
 	i = 0;
 	while (line_buffer[i] != '\n' && line_buffer[i] != '\0')
 		i++;
-	if (line_buffer[i] == 0 || line_buffer[1] == 0)
+	if (line_buffer[i] == 0 || line_buffer[i + 1] == 0)
 		return (NULL);
 	stat_char = ft_substr(line_buffer, i + 1, ft_strlen(line_buffer) - i);
 	if (*stat_char == 0)

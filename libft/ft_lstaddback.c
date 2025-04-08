@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstaddback.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moritzknoll <moritzknoll@student.42.fr>    +#+  +:+       +#+        */
+/*   By: mknoll <mknoll@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 13:22:50 by moritzknoll       #+#    #+#             */
-/*   Updated: 2025/02/17 12:04:21 by moritzknoll      ###   ########.fr       */
+/*   Updated: 2025/04/08 13:49:24 by mknoll           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,17 +28,17 @@ t_list	*ft_lstlast(t_list *lst)
 	return (last);
 }
 
-void ft_lstadd_back(t_list **lst, t_list *new)
+void	ft_lstadd_back(t_list **lst, t_list *new)
 {
-	t_list *last;
+	t_list	*last;
 
 	last = *lst;
 	if (!lst || !new)
-		return;
-	if (*lst == NULL) // Falls Liste leer ist, setze `new` als erstes Element
+		return ;
+	if (*lst == NULL)
 	{
 		*lst = new;
-		return;
+		return ;
 	}
 	while (last->next)
 		last = last->next;

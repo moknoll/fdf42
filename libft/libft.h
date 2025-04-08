@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moritzknoll <moritzknoll@student.42.fr>    +#+  +:+       +#+        */
+/*   By: mknoll <mknoll@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 11:53:23 by mknoll            #+#    #+#             */
-/*   Updated: 2025/02/27 15:19:59 by moritzknoll      ###   ########.fr       */
+/*   Updated: 2025/04/08 13:46:56 by mknoll           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@
 
 int		ft_atoi(const char *str);
 void	ft_bzero(void *s, int n);
-void	*ft_calloc(size_t nitems, size_t size);
 int		ft_isalnum(int c);
 int		ft_isalpha(int c);
 int		ft_isascii(int c);
@@ -57,12 +56,12 @@ int		ft_toupper(int c);
 int		ft_isprint(int c);
 typedef struct s_list
 {
-	int			value;
-	int			price;
-	int			index;
-	int			current_pos;
-	bool		cheapest;
-	bool		above_median;
+	int				value;
+	int				price;
+	int				index;
+	int				current_pos;
+	bool			cheapest;
+	bool			above_median;
 	struct s_list	*target;
 	struct s_list	*prev;
 	struct s_list	*next;
@@ -73,11 +72,11 @@ void	ft_lstadd_front(t_list **lst, t_list *new);
 int		ft_lstsize(t_list *lst);
 t_list	*ft_lstlast(t_list *lst);
 void	ft_lstadd_back(t_list **lst, t_list *new);
-//void	ft_lstdelone(t_list *lst, void (*del)(void *));
 void	ft_lstadd_front(t_list **lst, t_list *new);
 void	ft_lstclear(t_list **lst, void (*del)(void *));
 
 char	*fill_line(int fd, char *stat_char, char *buffer);
 char	*seperate(char *line_buffer);
 char	*get_next_line(int fd);
+void	free_gnl_buffer(void);
 #endif

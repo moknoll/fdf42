@@ -3,19 +3,31 @@
 /*                                                        :::      ::::::::   */
 /*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moritzknoll <moritzknoll@student.42.fr>    +#+  +:+       +#+        */
+/*   By: mknoll <mknoll@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 07:15:45 by moritzknoll       #+#    #+#             */
-/*   Updated: 2025/04/08 07:07:02 by moritzknoll      ###   ########.fr       */
+/*   Updated: 2025/04/08 14:10:49 by mknoll           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "fdf.h"
+#include "fdf.h"
 
-void render_map(t_map *map)
+void	draw_wireframe(mlx_image_t *img, t_map *map)
 {
-	mlx_t* mlx;
-	mlx_image_t* img;
+	int	y;
+
+	y = 0;
+	while (y < map->height)
+	{
+		draw_row(img, map, y);
+		y++;
+	}
+}
+
+void	render_map(t_map *map)
+{
+	mlx_t			*mlx;
+	mlx_image_t		*img;
 
 	mlx = mlx_init(WIDTH, HEIGHT, "FdF", true);
 	img = mlx_new_image(mlx, WIDTH, HEIGHT);

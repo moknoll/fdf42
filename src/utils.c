@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moritzknoll <moritzknoll@student.42.fr>    +#+  +:+       +#+        */
+/*   By: mknoll <mknoll@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/06 09:14:15 by moritzknoll       #+#    #+#             */
-/*   Updated: 2025/04/08 09:07:30 by moritzknoll      ###   ########.fr       */
+/*   Updated: 2025/04/08 14:10:31 by mknoll           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,16 +18,16 @@ void	exit_error(char *msg)
 	exit(EXIT_FAILURE);
 }
 
-static int ft_isspace(char c)
+static int	ft_isspace(char c)
 {
-	if(c == 32 ||(c >= 9 && c <= 13))
-		return 1;
-	return 0;
+	if (c == 32 || (c >= 9 && c <= 13))
+		return (1);
+	return (0);
 }
 
-static int  get_digit(char c, int base)
+static int	get_digit(char c, int base)
 {
-	int digit;
+	int	digit;
 
 	if (c >= '0' && c <= '9')
 		digit = c - '0';
@@ -37,97 +37,51 @@ static int  get_digit(char c, int base)
 		digit = c - 'A' + 10;
 	else
 		return (-1);
-
-	return (digit < base ? digit : -1);
+	if (digit < base)
+		return (digit);
+	return (-1);
 }
 
-int ft_atoi_base(const char *str, int base)
+int	ft_atoi_base(const char *str, int base)
 {
-	int result = 0;
-	int sign = 1;
-	int digit;
+	int	result;
+	int	sign;
+	int	digit;
 
+	sign = 1;
+	result = 0;
 	if (!str || base < 2 || base > 16)
 		return (0);
 	while (ft_isspace(*str))
 		str++;
 	if (*str == '-' || *str == '+')
-		sign = (*str++ == '-') ? -1 : 1;
-	while ((digit = get_digit(*str, base)) >= 0)
+	{
+		if (*str == '-')
+			sign = -1;
+		str++;
+	}
+	digit = get_digit(*str, base);
+	while (digit >= 0)
 	{
 		result = result * base + digit;
 		str++;
+		digit = get_digit(*str, base);
 	}
 	return (result * sign);
 }
 
 void	free_split(char **split_array)
 {
-	int i;
+	int	i;
+
 	if (!split_array)
 		return ;
 	i = 0;
 	while (split_array[i])
 	{
 		free(split_array[i]);
+		split_array[i] = NULL;
 		i++;
 	}
 	free(split_array);
-}
-
-void	free_map(t_map *map)
-{
-	int	y;
-
-	if (!map)
-		return ;
-	y = 0;
-	while (y < map->height)
-	{
-		if (map->grid[y])
-			free(map->grid[y]);
-		y++;
-	}
-	if (map->grid)
-		free(map->grid);
-	free(map);
-}
-
-void free_grid(t_point **grid, int height)
-{
-	int i;
-
-	if (!grid)
-		return;
-
-	i = 0;
-	while (i < height)
-	{
-		if (grid[i])
-			free(grid[i]);
-		i++;
-	}
-	free(grid);
-}
-
-size_t	ft_strspn(const char *s, const char *accept)
-{
-	size_t	i;
-	size_t	j;
-
-	i = 0;
-	while (s[i])
-	{
-		j = 0;
-		while (accept[j])
-		{
-			if (s[i] == accept[j])
-				break ;
-			j++;
-		}
-		if (!accept[j])
-			break ;
-		i++;
-	}
-	return (i);
 }

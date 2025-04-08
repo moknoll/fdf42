@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   color.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moritzknoll <moritzknoll@student.42.fr>    +#+  +:+       +#+        */
+/*   By: mknoll <mknoll@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 08:18:00 by moritzknoll       #+#    #+#             */
-/*   Updated: 2025/04/08 09:35:38 by moritzknoll      ###   ########.fr       */
+/*   Updated: 2025/04/08 14:15:07 by mknoll           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,9 @@ int	interpolate(int c1, int c2, float ratio)
 	rgbe[0] = (c2 >> 16) & 0xFF;
 	rgbe[1] = (c2 >> 8) & 0xFF;
 	rgbe[2] = c2 & 0xFF;
-	result = (((int)(rgbs[0] + ratio * (rgbe[0] - rgbs[0]))) << 16) |
-			(((int)(rgbs[1] + ratio * (rgbe[1] - rgbs[1]))) << 8) |
-			((int)(rgbs[2] + ratio * (rgbe[2] - rgbs[2])));
+	result = (((int)(rgbs[0] + ratio * (rgbe[0] - rgbs[0]))) << 16)
+		| (((int)(rgbs[1] + ratio * (rgbe[1] - rgbs[1]))) << 8)
+		| ((int)(rgbs[2] + ratio * (rgbe[2] - rgbs[2])));
 	return (result);
 }
 
@@ -44,9 +44,9 @@ static int	get_color(float ratio)
 
 static void	get_z_bounds(t_map *map, int *z_min, int *z_max)
 {
-	int y;
-	int x;
-	int z;
+	int	y;
+	int	x;
+	int	z;
 
 	*z_min = map->grid[0][0].z;
 	*z_max = map->grid[0][0].z;
@@ -67,9 +67,9 @@ static void	get_z_bounds(t_map *map, int *z_min, int *z_max)
 	}
 }
 
-static void set_color_for_equal_heights(t_map *map)
+static void	set_color_for_equal_heights(t_map *map)
 {
-	int coords[2];
+	int	coords[2];
 
 	coords[0] = 0;
 	while (coords[0] < map->height)
@@ -84,17 +84,17 @@ static void set_color_for_equal_heights(t_map *map)
 	}
 }
 
-void calculate_colors(t_map *map)
+void	calculate_colors(t_map *map)
 {
-	int z_bounds[2];
-	int coords[2];
-	float ratio;
+	int		z_bounds[2];
+	int		coords[2];
+	float	ratio;
 
 	get_z_bounds(map, &z_bounds[0], &z_bounds[1]);
 	if (z_bounds[0] == z_bounds[1])
 	{
 		set_color_for_equal_heights(map);
-		return;
+		return ;
 	}
 	coords[0] = 0;
 	while (coords[0] < map->height)
@@ -102,13 +102,11 @@ void calculate_colors(t_map *map)
 		coords[1] = 0;
 		while (coords[1] < map->width)
 		{
-			ratio = (float)(map->grid[coords[0]][coords[1]].z - z_bounds[0]) /
-					(z_bounds[1] - z_bounds[0]);
+			ratio = (float)(map->grid[coords[0]][coords[1]].z - z_bounds[0])
+				/ (z_bounds[1] - z_bounds[0]);
 			map->grid[coords[0]][coords[1]].color = get_color(ratio);
 			coords[1]++;
 		}
 		coords[0]++;
 	}
 }
-
-

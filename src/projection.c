@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   projection.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moritzknoll <moritzknoll@student.42.fr>    +#+  +:+       +#+        */
+/*   By: mknoll <mknoll@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 07:45:58 by moritzknoll       #+#    #+#             */
-/*   Updated: 2025/04/08 09:26:23 by moritzknoll      ###   ########.fr       */
+/*   Updated: 2025/04/08 14:11:10 by mknoll           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 t_point	project(t_point p, t_map *map)
 {
-	t_point proj;
-	float scale_x;
-	int tmp;
-	float scale_y;
-	float scale;
+	t_point	proj;
+	float	scale_x;
+	int		tmp;
+	float	scale_y;
+	float	scale;
 
 	scale_x = (WIDTH * 0.5f) / map->width;
 	scale_y = (HEIGHT * 0.5f) / map->height;

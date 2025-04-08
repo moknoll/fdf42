@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   drawing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moritzknoll <moritzknoll@student.42.fr>    +#+  +:+       +#+        */
+/*   By: mknoll <mknoll@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 07:19:49 by moritzknoll       #+#    #+#             */
-/*   Updated: 2025/04/08 08:43:42 by moritzknoll      ###   ########.fr       */
+/*   Updated: 2025/04/08 13:58:50 by mknoll           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "fdf.h"
+#include "fdf.h"
 
 void	draw_line_loop(mlx_image_t *img, t_point p1, t_point p2, t_line_vars *v)
 {
@@ -26,7 +26,7 @@ void	draw_line_loop(mlx_image_t *img, t_point p1, t_point p2, t_line_vars *v)
 			mlx_put_pixel(img, p1.x, p1.y, color);
 		}
 		if (p1.x == p2.x && p1.y == p2.y)
-			break;
+			break ;
 		update_line_position(&p1, v);
 		v->z += v->z_step;
 	}
@@ -78,17 +78,5 @@ void	draw_row(mlx_image_t *img, t_map *map, int y)
 		draw_right(img, map, x, y);
 		draw_down(img, map, x, y);
 		x++;
-	}
-}
-
-void	draw_wireframe(mlx_image_t *img, t_map *map)
-{
-	int	y;
-
-	y = 0;
-	while (y < map->height)
-	{
-		draw_row(img, map, y);
-		y++;
 	}
 }

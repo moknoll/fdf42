@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstnew.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moritzknoll <moritzknoll@student.42.fr>    +#+  +:+       +#+        */
+/*   By: mknoll <mknoll@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 11:55:09 by mknoll            #+#    #+#             */
-/*   Updated: 2025/02/17 11:30:52 by moritzknoll      ###   ########.fr       */
+/*   Updated: 2025/04/08 13:50:14 by mknoll           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ t_list	*ft_lstnew(int value)
 	if (!new_node)
 		return (NULL);
 	new_node->value = value;
-	new_node->index = -1,
+	new_node->index = -1;
 	new_node->next = NULL;
 	return (new_node);
 }

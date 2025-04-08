@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_line.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moritzknoll <moritzknoll@student.42.fr>    +#+  +:+       +#+        */
+/*   By: mknoll <mknoll@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/06 09:13:17 by moritzknoll       #+#    #+#             */
-/*   Updated: 2025/04/08 09:16:38 by moritzknoll      ###   ########.fr       */
+/*   Updated: 2025/04/08 11:41:09 by mknoll           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static int	extract_color(char *str)
 {
-	 char *hex_start;
+	char	*hex_start;
 
 	hex_start = ft_strchr(str, ',');
 	if (!hex_start)
@@ -40,8 +40,8 @@ static bool	is_valid_number(const char *str)
 
 static int	validate_and_split(char *line, int width, char ***split)
 {
-	int	i;
-	char *trimmed_line;
+	int		i;
+	char	*trimmed_line;
 
 	trimmed_line = ft_strtrim(line, " \t\n\r");
 	if (!trimmed_line)
