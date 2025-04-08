@@ -6,7 +6,7 @@
 /*   By: moritzknoll <moritzknoll@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 08:18:00 by moritzknoll       #+#    #+#             */
-/*   Updated: 2025/04/08 08:48:29 by moritzknoll      ###   ########.fr       */
+/*   Updated: 2025/04/08 09:35:38 by moritzknoll      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,13 +67,35 @@ static void	get_z_bounds(t_map *map, int *z_min, int *z_max)
 	}
 }
 
-void	calculate_colors(t_map *map)
+static void set_color_for_equal_heights(t_map *map)
 {
-	int		z_bounds[2];
-	int		coords[2];
-	float	ratio;
+	int coords[2];
+
+	coords[0] = 0;
+	while (coords[0] < map->height)
+	{
+		coords[1] = 0;
+		while (coords[1] < map->width)
+		{
+			map->grid[coords[0]][coords[1]].color = 0xFFFFFF;
+			coords[1]++;
+		}
+		coords[0]++;
+	}
+}
+
+void calculate_colors(t_map *map)
+{
+	int z_bounds[2];
+	int coords[2];
+	float ratio;
 
 	get_z_bounds(map, &z_bounds[0], &z_bounds[1]);
+	if (z_bounds[0] == z_bounds[1])
+	{
+		set_color_for_equal_heights(map);
+		return;
+	}
 	coords[0] = 0;
 	while (coords[0] < map->height)
 	{
@@ -88,3 +110,5 @@ void	calculate_colors(t_map *map)
 		coords[0]++;
 	}
 }
+
+

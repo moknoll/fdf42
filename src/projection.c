@@ -6,7 +6,7 @@
 /*   By: moritzknoll <moritzknoll@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 07:45:58 by moritzknoll       #+#    #+#             */
-/*   Updated: 2025/04/08 08:44:51 by moritzknoll      ###   ########.fr       */
+/*   Updated: 2025/04/08 09:26:23 by moritzknoll      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ t_point	project(t_point p, t_map *map)
 
 	scale_x = (WIDTH * 0.5f) / map->width;
 	scale_y = (HEIGHT * 0.5f) / map->height;
-	scale = fminf(scale_x, scale_y) * 0.9f;
+	scale = fminf(scale_x, scale_y) * 0.85f;
 	tmp = p.x;
 	proj.x = (tmp - p.y) * cosf(0.523599) * scale;
 	proj.y = (tmp + p.y) * sinf(0.523599) * scale - p.z * (scale / 4.0f);

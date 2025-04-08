@@ -6,7 +6,7 @@
 /*   By: moritzknoll <moritzknoll@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/06 09:13:23 by moritzknoll       #+#    #+#             */
-/*   Updated: 2025/04/08 07:47:24 by moritzknoll      ###   ########.fr       */
+/*   Updated: 2025/04/08 09:07:40 by moritzknoll      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ void	exit_error(char *msg);
 int		ft_atoi_base(const char *str, int base);
 void	free_grid(t_point **grid, int height);
 void	free_split(char **split_array);
+size_t	ft_strspn(const char *s, const char *accept);
 
 /* ---- MLX42 HOOKS ---- */
 void	handle_closehook(void *param);

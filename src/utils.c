@@ -6,7 +6,7 @@
 /*   By: moritzknoll <moritzknoll@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/06 09:14:15 by moritzknoll       #+#    #+#             */
-/*   Updated: 2025/04/08 07:07:27 by moritzknoll      ###   ########.fr       */
+/*   Updated: 2025/04/08 09:07:30 by moritzknoll      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,4 +108,26 @@ void free_grid(t_point **grid, int height)
 		i++;
 	}
 	free(grid);
+}
+
+size_t	ft_strspn(const char *s, const char *accept)
+{
+	size_t	i;
+	size_t	j;
+
+	i = 0;
+	while (s[i])
+	{
+		j = 0;
+		while (accept[j])
+		{
+			if (s[i] == accept[j])
+				break ;
+			j++;
+		}
+		if (!accept[j])
+			break ;
+		i++;
+	}
+	return (i);
 }
