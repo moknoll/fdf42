@@ -6,54 +6,43 @@
 /*   By: moritzknoll <moritzknoll@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 08:18:00 by moritzknoll       #+#    #+#             */
-/*   Updated: 2025/04/07 12:47:46 by moritzknoll      ###   ########.fr       */
+/*   Updated: 2025/04/08 08:48:29 by moritzknoll      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-int interpolate(int c1, int c2, float ratio)
+int	interpolate(int c1, int c2, float ratio)
 {
-	int r1;
-	int g1;
-	int b1;
-	int r2;
-	int g2;
-	int b2;
-	int r;
-	int g;
-	int b;
+	int	rgbs[3];
+	int	rgbe[3];
+	int	result;
 
-	r1 = (c1 >> 16) & 0xFF;
-	g1 = (c1 >> 8) & 0xFF;
-	b1 = c1 & 0xFF;
-	r2 = (c2 >> 16) & 0xFF;
-	g2 = (c2 >> 8) & 0xFF;
-	b2 = c2 & 0xFF;
-	r = r1 + ratio * (r2 - r1);
-	g = g1 + ratio * (g2 - g1);
-	b = b1 + ratio * (b2 - b1);
-	return (r << 16) | (g << 8) | b;
+	rgbs[0] = (c1 >> 16) & 0xFF;
+	rgbs[1] = (c1 >> 8) & 0xFF;
+	rgbs[2] = c1 & 0xFF;
+	rgbe[0] = (c2 >> 16) & 0xFF;
+	rgbe[1] = (c2 >> 8) & 0xFF;
+	rgbe[2] = c2 & 0xFF;
+	result = (((int)(rgbs[0] + ratio * (rgbe[0] - rgbs[0]))) << 16) |
+			(((int)(rgbs[1] + ratio * (rgbe[1] - rgbs[1]))) << 8) |
+			((int)(rgbs[2] + ratio * (rgbe[2] - rgbs[2])));
+	return (result);
 }
 
-static int get_color(float ratio)
+static int	get_color(float ratio)
 {
 	if (ratio < 0.2f)
-		return interpolate(0xFFFFFF, 0xADD8E6, ratio / 0.2f);  // Weiß zu Hellblau
-	else if (ratio < 0.4f)  // Niedrig
-		return interpolate(0xADD8E6, 0xFFFF00, (ratio - 0.2f) / 0.2f);  // Hellblau zu Gelb
-	else if (ratio < 0.6f)  // Mittel
-		return interpolate(0xFFFF00, 0xFF6347, (ratio - 0.4f) / 0.2f);  // Gelb zu Tomatenrot
-	else if (ratio < 0.8f)  // Hoch
-		return interpolate(0xFF6347, 0xFF4500, (ratio - 0.6f) / 0.2f);  // Tomatenrot zu Orange-Red
-	else  // Sehr hoch
-		return interpolate(0xFF4500, 0xFF0000, (ratio - 0.8f) / 0.2f);  // Orange-Red zu Rot
+		return (interpolate(0x4B79CF, 0x93C572, ratio / 0.2f));
+	else if (ratio < 0.5f)
+		return (interpolate(0x93C572, 0xE0C65E, (ratio - 0.2f) / 0.5f));
+	else if (ratio < 0.8f)
+		return (interpolate(0xE0C65E, 0xC35214, (ratio - 0.5f) / 0.3f));
+	else
+		return (interpolate(0xC35214, 0xFFFFFF, (ratio - 0.8f) / 0.2f));
 }
 
-
-
-
-static void get_z_bounds(t_map *map, int *z_min, int *z_max)
+static void	get_z_bounds(t_map *map, int *z_min, int *z_max)
 {
 	int y;
 	int x;
@@ -78,33 +67,24 @@ static void get_z_bounds(t_map *map, int *z_min, int *z_max)
 	}
 }
 
-void calculate_colors(t_map *map)
+void	calculate_colors(t_map *map)
 {
-    int z_min;
-    int z_max;
-    int x;
-    int y;
-    float ratio;
+	int		z_bounds[2];
+	int		coords[2];
+	float	ratio;
 
-    // Hole die minimalen und maximalen Höhenwerte
-    get_z_bounds(map, &z_min, &z_max);
-
-    // Berechne den Farbverlauf basierend auf den Höhenwerten
-    y = 0;
-    while (y < map->height)
-    {
-        x = 0;
-        while (x < map->width)
-        {
-            int z = map->grid[y][x].z;
-
-            // Berechne das Verhältnis für den Farbverlauf (zwischen 0 und 1)
-            ratio = (float)(z - z_min) / (z_max - z_min);
-
-            // Berechne die Farbe basierend auf dem Verhältnis
-            map->grid[y][x].color = get_color(ratio);
-            x++;
-        }
-        y++;
-    }
+	get_z_bounds(map, &z_bounds[0], &z_bounds[1]);
+	coords[0] = 0;
+	while (coords[0] < map->height)
+	{
+		coords[1] = 0;
+		while (coords[1] < map->width)
+		{
+			ratio = (float)(map->grid[coords[0]][coords[1]].z - z_bounds[0]) /
+					(z_bounds[1] - z_bounds[0]);
+			map->grid[coords[0]][coords[1]].color = get_color(ratio);
+			coords[1]++;
+		}
+		coords[0]++;
+	}
 }

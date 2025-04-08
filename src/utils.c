@@ -6,7 +6,7 @@
 /*   By: moritzknoll <moritzknoll@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/06 09:14:15 by moritzknoll       #+#    #+#             */
-/*   Updated: 2025/04/07 11:07:13 by moritzknoll      ###   ########.fr       */
+/*   Updated: 2025/04/08 07:07:27 by moritzknoll      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static int  get_digit(char c, int base)
 	else
 		return (-1);
 
-	return (digit < base ? digit : -1); //change
+	return (digit < base ? digit : -1);
 }
 
 int ft_atoi_base(const char *str, int base)
@@ -52,7 +52,7 @@ int ft_atoi_base(const char *str, int base)
 	while (ft_isspace(*str))
 		str++;
 	if (*str == '-' || *str == '+')
-		sign = (*str++ == '-') ? -1 : 1; // change
+		sign = (*str++ == '-') ? -1 : 1;
 	while ((digit = get_digit(*str, base)) >= 0)
 	{
 		result = result * base + digit;
@@ -66,13 +66,13 @@ void	free_split(char **split_array)
 	int i;
 	if (!split_array)
 		return ;
-    i = 0;
-    while (split_array[i])
-    {
-        free(split_array[i]);
-        i++;
-    }
-    free(split_array);
+	i = 0;
+	while (split_array[i])
+	{
+		free(split_array[i]);
+		i++;
+	}
+	free(split_array);
 }
 
 void	free_map(t_map *map)

@@ -6,13 +6,13 @@
 /*   By: moritzknoll <moritzknoll@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/06 09:13:17 by moritzknoll       #+#    #+#             */
-/*   Updated: 2025/04/07 09:52:45 by moritzknoll      ###   ########.fr       */
+/*   Updated: 2025/04/08 08:43:34 by moritzknoll      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-static int extract_color(char *str)
+static int	extract_color(char *str)
 {
 	 char *hex_start;
 
@@ -38,24 +38,22 @@ static bool	is_valid_number(const char *str)
 	return (true);
 }
 
-static int	validate_and_split(char *line, int width, char ***split, int line_num)
+static int	validate_and_split(char *line, int width, char ***split)
 {
 	int	i;
 
 	*split = ft_split(line, ' ');
 	if (!*split)
-		return (printf("Error: ft_split failed at line %d\n", line_num), 0);
+		return (free_split(*split), 0);
 	i = 0;
 	while ((*split)[i])
 		i++;
 	if (i != width)
-		return (free_split(*split),
-			printf("Error: ft_split failed at line %d\n", line_num), 0);
+		return (free_split(*split), 0);
 	i = 0;
 	while (i < width)
 		if (!is_valid_number((*split)[i++]))
-			return (free_split(*split),
-				printf("Error: ft_split failed at line %d\n", line_num), 0);
+			return (free_split(*split), 0);
 	return (1);
 }
 
@@ -65,7 +63,7 @@ t_point	*parse_line(char *line, int width, int line_num)
 	t_point	*row;
 	int		i;
 
-	if (!validate_and_split(line, width, &split, line_num))
+	if (!validate_and_split(line, width, &split))
 		return (NULL);
 	row = malloc(sizeof(t_point) * width);
 	if (!row)

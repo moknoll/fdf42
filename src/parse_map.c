@@ -6,7 +6,7 @@
 /*   By: moritzknoll <moritzknoll@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/06 09:13:45 by moritzknoll       #+#    #+#             */
-/*   Updated: 2025/04/07 11:01:06 by moritzknoll      ###   ########.fr       */
+/*   Updated: 2025/04/08 08:43:31 by moritzknoll      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,11 @@ static t_map	*init_map(int height)
 		return (free(map), NULL);
 	return (map);
 }
-static int ft_strcmp(const char *s1, const char *s2)
+
+static int	ft_strcmp(const char *s1, const char *s2)
 {
-	unsigned char   c1;
-	unsigned char   c2;
+	unsigned char	c1;
+	unsigned char	c2;
 
 	while (*s1 && *s2)
 	{
@@ -42,17 +43,17 @@ static int ft_strcmp(const char *s1, const char *s2)
 	return ((unsigned char)*s1 - (unsigned char)*s2);
 }
 
-static bool has_fdf_extension(const char *filename)
+static bool	has_fdf_extension(const char *filename)
 {
 	const char *dot;
 
-	dot = ft_strrchr(filename, '.');  // Finde den letzten Punkt im Dateinamen
-	if (!dot || dot == filename)      // Kein Punkt oder versteckte Datei (z. B. ".hidden")
+	dot = ft_strrchr(filename, '.');
+	if (!dot || dot == filename)
 		return false;
 	return (ft_strcmp(dot, ".fdf") == 0);
 }
 
-int		get_map_width(char *line)
+int	get_map_width(char *line)
 {
 	int		width;
 	char	**tokens;
@@ -71,7 +72,7 @@ int		get_map_width(char *line)
 	return (width);
 }
 
-int get_map_height(const char *filename)
+int	get_map_height(const char *filename)
 {
 	int fd;
 	char *line;
@@ -91,39 +92,58 @@ int get_map_height(const char *filename)
 	return (height);
 }
 
-t_map	*parse_map(const char *filename)
+static void	validate_extension(const char *filename)
 {
-	t_map	*map;
-	int		fd;
-	char	*line;
-	int		i;
-	int		line_num = 1;
-
 	if (!has_fdf_extension(filename))
 		exit_error("Invalid file extension. Use .fdf");
-	map = init_map(get_map_height(filename));
-	if (!map)
-		exit_error("File is empty");
+}
+
+static int	open_map_file(const char *filename)
+{
+	int	fd;
+
 	fd = open(filename, O_RDONLY);
 	if (fd == -1)
-		return (free(map), exit_error("Failed to open map file"), NULL);
+		exit_error("Failed to open map file");
+	return (fd);
+}
+
+static t_map	*fill_map_grid(int fd, t_map *map)
+{
+	char	*line;
+	int		i;
+	int		line_num;
+
 	line = get_next_line(fd);
-    if (!line)
-        return (free(map), close(fd), exit_error("Failed to read map file"), NULL);
+	if (!line)
+		return(exit_error("Failed to read map file"), close(fd), free(map), NULL);
 	map->width = get_map_width(line);
 	i = 0;
+	line_num = 1;
 	while (i < map->height && line)
 	{
-		map->grid[i] = parse_line(line, map->width, line_num++);
-		printf("Parsed line %d\n", i);
+		map->grid[i] = parse_line(line, map->width, line_num);
 		free(line);
 		if (!map->grid[i])
 			return (free_grid(map->grid, i), free(map), NULL);
 		line = get_next_line(fd);
 		i++;
+		line_num++;
 	}
 	close(fd);
 	return (map);
 }
 
+t_map	*parse_map(const char *filename)
+{
+	t_map	*map;
+	int		fd;
 
+	validate_extension(filename);
+	map = init_map(get_map_height(filename));
+	if (!map)
+		exit_error("File is empty");
+	fd = open_map_file(filename);
+	map = fill_map_grid(fd, map);
+	return (map);
+}
